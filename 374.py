@@ -64,12 +64,40 @@ def sixFrame(sequence):
    return (F1, F2, F3, F4, F5, F6)
 
 
+
 # ALGORITHM THREE
-# def longestCommonSequence():  This function
-def longestCommonSequence(sequence):
-    pass
+# def longestCommonSequence(): This function acts as the
+# main calling fucntion
+def longestCommonSequenceMain(seq1, seq2):
+    return longestCommonSequence(seq1, seq2, len(seq1), len(seq2))
+
+# def longestCommonSequence():  This function acts as a
+# recursive helper function for the longestCommonSequence()
+# Based on https://www.geeksforgeeks.org/python-program-for-longest-common-subsequence/
+def longestCommonSequence(seq1, seq2, x, y):
+    if x == 0 or y == 0:
+        return 0;
+    elif seq1[x - 1] == seq2[y - 1]:
+        return 1 + longestCommonSequence(seq1, seq2, x - 1, y - 1);
+    else:
+        return max(longestCommonSequence(seq1, seq2, x, y - 1), longestCommonSequence(seq1, seq2, x - 1, y));
 
 
 # Testing Area
 # Main Function
+if __name__ == "__main__":
+    # Example
+    dna_seq = "AATTGGGCCTGTCGATCGGGGGGTCGTCGTGATGCTAGCTAGCATCTGACTCAGCATACGCTGACGATCGATCGCATCAGCTAGCATCGACTAGCTAGC"
+    frames = sixFrame(dna_seq)
+
+    for frame in frames:
+        print(frame)
+
+    #Not Working
+    '''
+    for frame1 in frames:
+        for frame2 in frames:
+            if id(frame1) is not id(frame2):
+                print("LCS : " + str(longestCommonSequenceMain(frame1, frame2)))
+    '''
 
