@@ -66,33 +66,63 @@ def sixFrame(sequence):
 
 
 # ALGORITHM THREE
+# ALGORITHM THREE
 # def longestCommonSequence(): This function acts as the
 # main calling fucntion
 def longestCommonSequenceMain(seq1, seq2):
-    return longestCommonSequence(seq1, seq2, len(seq1), len(seq2))
+    return LCSubStr(seq1, seq2, len(seq1), len(seq2))
 
-# def longestCommonSequence():  This function acts as a
-# recursive helper function for the longestCommonSequence()
-# Based on https://www.geeksforgeeks.org/python-program-for-longest-common-subsequence/
-def longestCommonSequence(seq1, seq2, x, y):
-    if x == 0 or y == 0:
-        return 0;
-    elif seq1[x - 1] == seq2[y - 1]:
-        return 1 + longestCommonSequence(seq1, seq2, x - 1, y - 1);
-    else:
-        return max(longestCommonSequence(seq1, seq2, x, y - 1), longestCommonSequence(seq1, seq2, x - 1, y));
+
+# Python3 implementation of Finding
+# Length of Longest Common Substring
+
+# Returns length of longest common
+# substring of X[0..m-1] and Y[0..n-1]
+
+
+def LCSubStr(X, Y, m, n):
+    # Create a table to store lengths of
+    # longest common suffixes of substrings.
+    # Note that LCSuff[i][j] contains the
+    # length of longest common suffix of
+    # X[0...i-1] and Y[0...j-1]. The first
+    # row and first column entries have no
+    # logical meaning, they are used only
+    # for simplicity of the program.
+
+    # LCSuff is the table with zero
+    # value initially in each cell
+    LCSuff = [[0 for k in range(n + 1)] for l in range(m + 1)]
+
+    # To store the length of
+    # longest common substring
+    result = 0
+
+    # Following steps to build
+    # LCSuff[m+1][n+1] in bottom up fashion
+    for i in range(m + 1):
+        for j in range(n + 1):
+            if (i == 0 or j == 0):
+                LCSuff[i][j] = 0
+            elif (X[i - 1] == Y[j - 1]):
+                LCSuff[i][j] = LCSuff[i - 1][j - 1] + 1
+                result = max(result, LCSuff[i][j])
+            else:
+                LCSuff[i][j] = 0
+    return result
 
 
 # Testing Area
 # Main Function
 if __name__ == "__main__":
     # Example
-    dna_seq = "AATTGGGCCTGTCGATCGGGGGGTCGTCGTGATGCTAGCTAGCATCTGACTCAGCATACGCTGACGATCGATCGCATCAGCTAGCATCGACTAGCTAGC"
+    dna_seq = "AATTGGGGATCGATCGCATCAGCTAGCATCGACTAGCTAGC"
     frames = sixFrame(dna_seq)
 
     for frame in frames:
         print(frame)
 
+    print(longestCommonSequenceMain(frames[1], frames[2]))
     #Not Working
     '''
     for frame1 in frames:
@@ -100,4 +130,3 @@ if __name__ == "__main__":
             if id(frame1) is not id(frame2):
                 print("LCS : " + str(longestCommonSequenceMain(frame1, frame2)))
     '''
-
