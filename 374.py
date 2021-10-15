@@ -112,21 +112,45 @@ def LCSubStr(X, Y, m, n):
     return result
 
 
+
+# ALGORITHM FOUR
+def LongestGeneExpression(frames1, frames2):
+    print("Longest Gene Expression")
+    framePair = ["",""]
+    longestLength = 0
+    for frame1 in frames1:
+        for frame2 in frames2:
+            currentLength = longestCommonSequenceMain(frame1, frame2)
+            if (currentLength) > (longestLength):
+                longestLength = currentLength
+                framePair[0] = frame1
+                framePair[1] = frame2
+
+    print(longestLength)
+    print(framePair[0])
+    print(framePair[1])
+
+
 # Testing Area
 # Main Function
 if __name__ == "__main__":
     # Example
-    dna_seq = "AATTGGGGATCGATCGCATCAGCTAGCATCGACTAGCTAGC"
-    frames = sixFrame(dna_seq)
+    dna_seq1 = "AATTGGGGATCGATCGCATCAGCTAGCATCGACTAGCTAGC"
+    dna_seq2 = "AGTTGGGGCCCGTTGTGCAAAGTTCGCTAATCGACTAGCTAGC"
 
-    for frame in frames:
+
+    frames1 = sixFrame(dna_seq1)
+    frames2 = sixFrame(dna_seq2)
+
+    print("DNA ONE ", dna_seq1)
+    print("Six Frames")
+    for frame in frames1:
         print(frame)
 
-    print(longestCommonSequenceMain(frames[1], frames[2]))
-    #Not Working
-    '''
-    for frame1 in frames:
-        for frame2 in frames:
-            if id(frame1) is not id(frame2):
-                print("LCS : " + str(longestCommonSequenceMain(frame1, frame2)))
-    '''
+    print("\n\nDNA TWO ", dna_seq2)
+    print("Six Frames")
+    for frame in frames2:
+        print(frame)
+
+    print()
+    LongestGeneExpression(frames1, frames2)
