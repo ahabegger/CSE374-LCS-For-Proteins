@@ -119,15 +119,19 @@ def LongestGeneExpression(frames1, frames2):
     print("Longest Gene Expression")
     framePair = ["",""]
     longestLength = 0
+    longestGeneExpression = ''
     for frame1 in frames1:
         for frame2 in frames2:
-            currentLength = longestCommonSequenceMain(frame1, frame2)
+            lcs = longestCommonSequenceMain(frame1, frame2)
+            currentLength = len(lcs)
             if (currentLength) > (longestLength):
                 longestLength = currentLength
                 framePair[0] = frame1
                 framePair[1] = frame2
+                longestGeneExpression = lcs
 
     print(longestLength)
+    print(longestGeneExpression)
     print(framePair[0])
     print(framePair[1])
 
