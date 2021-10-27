@@ -98,6 +98,13 @@ def LCSubStr(X, Y, m, n):
     # longest common substring
     result = 0
 
+    # To store the index of the cell
+    # which contains the maximum value.
+    # This cell's index helps in building
+    # up the longest common substring
+    # from right to left.
+    row, col = 0, 0
+
     # Following steps to build
     # LCSuff[m+1][n+1] in bottom up fashion
     for i in range(m + 1):
@@ -107,10 +114,30 @@ def LCSubStr(X, Y, m, n):
             elif (X[i - 1] == Y[j - 1]):
                 if (X[i - 1] != '*'):
                     LCSuff[i][j] = LCSuff[i - 1][j - 1] + 1
-                    result = max(result, LCSuff[i][j])
+                    if result < LCSuff[i][j]:
+                        result = LCSuff[i][j]
+                        row = i
+                        col = j
             else:
                 LCSuff[i][j] = 0
-    return result
+
+
+    # allocate space for the longest
+    # common substring
+    resultStr = ['0'] * result
+
+    # traverse up diagonally form the
+    # (row, col) cell until LCSuff[row][col] != 0
+    while LCSuff[row][col] != 0:
+        result -= 1
+        resultStr[result] = X[row - 1]  # or Y[col-1]
+
+        # move diagonally up to previous cell
+        row -= 1
+        col -= 1
+
+    # required longest common substring
+    return ''.join(resultStr)
 
 
 
