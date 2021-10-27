@@ -105,8 +105,9 @@ def LCSubStr(X, Y, m, n):
             if (i == 0 or j == 0):
                 LCSuff[i][j] = 0
             elif (X[i - 1] == Y[j - 1]):
-                LCSuff[i][j] = LCSuff[i - 1][j - 1] + 1
-                result = max(result, LCSuff[i][j])
+                if (X[i - 1] != '*'):
+                    LCSuff[i][j] = LCSuff[i - 1][j - 1] + 1
+                    result = max(result, LCSuff[i][j])
             else:
                 LCSuff[i][j] = 0
     return result
