@@ -1,11 +1,9 @@
 '''
 CSE 374 Group Assignment
 Names : Alex Habegger, Josh Lawson
-
 PLEASE INPUT YOUR NAME SO THE GROUP KNOWS THAT YOU VIEWED THE CODE
 PLEASE INPUT YOUR NAME SO THE GROUP KNOWS THAT YOU VIEWED THE CODE
 PLEASE INPUT YOUR NAME SO THE GROUP KNOWS THAT YOU VIEWED THE CODE
-
 Rough Code With Documentation
 '''
 
@@ -36,7 +34,7 @@ def translation(sequence):
 
     rna_seq = sequence.replace('T', 'U')
     protiens = []
-    
+
     # Counts by 3 to grab all codons in sequence
     for x in range(0, len(rna_seq) - 2, 3):
         # Some Sequence have N standing for unknown nucleotide
@@ -67,77 +65,55 @@ def sixFrame(sequence):
 
 # ALGORITHM THREE
 # ALGORITHM THREE
-# def longestCommonSequence(): This function acts as the
-# main calling fucntion
-def longestCommonSequenceMain(seq1, seq2):
-    return LCSubStr(seq1, seq2, len(seq1), len(seq2))
-
-
+# def longestCommonSequence():
 # Python3 implementation of Finding
 # Length of Longest Common Substring
-
-# Returns length of longest common
-# substring of X[0..m-1] and Y[0..n-1]
-
-
-def LCSubStr(X, Y, m, n):
-    # Create a table to store lengths of
-    # longest common suffixes of substrings.
-    # Note that LCSuff[i][j] contains the
-    # length of longest common suffix of
-    # X[0...i-1] and Y[0...j-1]. The first
-    # row and first column entries have no
-    # logical meaning, they are used only
-    # for simplicity of the program.
-
+def longestCommonSequenceMain(seq1, seq2):
     # LCSuff is the table with zero
     # value initially in each cell
-    LCSuff = [[0 for k in range(n + 1)] for l in range(m + 1)]
+    table = [[0 for a in range(len(seq2) + 1)] for b in range(len(seq1) + 1)]
 
-    # To store the length of
-    # longest common substring
+    # Creates lengthResult to store the length
+    # of the current Longest Common Substring and
+    # creates variables to store index of cell in
+    # table.
     result = 0
-
-    # To store the index of the cell
-    # which contains the maximum value.
-    # This cell's index helps in building
-    # up the longest common substring
-    # from right to left.
-    row, col = 0, 0
+    row = 0
+    col = 0
 
     # Following steps to build
     # LCSuff[m+1][n+1] in bottom up fashion
-    for i in range(m + 1):
-        for j in range(n + 1):
+    for i in range(len(seq1) + 1):
+        for j in range(len(seq2) + 1):
             if (i == 0 or j == 0):
-                LCSuff[i][j] = 0
-            elif (X[i - 1] == Y[j - 1]):
-                if (X[i - 1] != '*'):
-                    LCSuff[i][j] = LCSuff[i - 1][j - 1] + 1
-                    if result < LCSuff[i][j]:
-                        result = LCSuff[i][j]
+                table[i][j] = 0
+            elif (seq1[i - 1] == seq2[j - 1]):
+                if (seq1[i - 1] != '*'):
+                    table[i][j] = table[i - 1][j - 1] + 1
+                    if result < table[i][j]:
+                        result = table[i][j]
                         row = i
                         col = j
             else:
-                LCSuff[i][j] = 0
+                table[i][j] = 0
 
 
     # allocate space for the longest
     # common substring
-    resultStr = ['0'] * result
+    LCS = ['0'] * result
 
     # traverse up diagonally form the
     # (row, col) cell until LCSuff[row][col] != 0
-    while LCSuff[row][col] != 0:
+    while table[row][col] != 0:
         result -= 1
-        resultStr[result] = X[row - 1]  # or Y[col-1]
+        LCS[result] = seq1[row - 1]
 
         # move diagonally up to previous cell
         row -= 1
         col -= 1
 
     # required longest common substring
-    return ''.join(resultStr)
+    return ''.join(LCS)
 
 
 
