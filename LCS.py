@@ -1,14 +1,18 @@
 '''
 CSE 374 Group Assignment
-Names : Alex Habegger, Josh Lawson
-PLEASE INPUT YOUR NAME SO THE GROUP KNOWS THAT YOU VIEWED THE CODE
-PLEASE INPUT YOUR NAME SO THE GROUP KNOWS THAT YOU VIEWED THE CODE
-PLEASE INPUT YOUR NAME SO THE GROUP KNOWS THAT YOU VIEWED THE CODE
-Rough Code With Documentation
+Names : Alex Habegger, Josh Lawson, Michael Glum
+Names : Dillon Watkins, Max Zaremba
 '''
 
+# Importing time in order to do time testing
+import time
+
+# Importing random in order to create random DNA sequences
+import random
+
+
 # ALGORITHM ONE
-# def translation():  This function takes DNA sequence as the only
+# def translation(sequence): This function takes DNA sequence as the only
 # string argument. It will return a protein sequence as the returned
 # string. The Dictionary is hard coded DNA sequences to Protein.
 def translation(sequence):
@@ -53,27 +57,28 @@ def sixFrame(sequence):
    rna = sequence.replace("T","a").replace("A","t").replace("G","c").replace("C","g")
    rna = rna[::-1].upper()
 
+   # Creates the translations of possible binding sites
    F1 = translation(sequence)
    F2 = translation(sequence[1:])
    F3 = translation(sequence[2:])
    F4 = translation(rna)
    F5 = translation(rna[1:])
    F6 = translation(rna[2:])
+
+   # Returns the six frames that will be used for analysis
    return (F1, F2, F3, F4, F5, F6)
 
 
-
-# ALGORITHM THREE
 # ALGORITHM THREE
 # def longestCommonSequence():
-# Python3 implementation of Finding
-# Length of Longest Common Substring
-def longestCommonSequenceMain(seq1, seq2):
-    # LCSuff is the table with zero
-    # value initially in each cell
+# Modified version of Longest Common Substring but
+# will not return a LCS with end codon '*'
+def longestCommonSubstring(seq1, seq2):
+    # Creates a table in order to be used during
+    # Dynamic programming using a Tabulation method.
     table = [[0 for a in range(len(seq2) + 1)] for b in range(len(seq1) + 1)]
 
-    # Creates lengthResult to store the length
+    # Creates result to store the length
     # of the current Longest Common Substring and
     # creates variables to store index of cell in
     # table.
@@ -82,12 +87,12 @@ def longestCommonSequenceMain(seq1, seq2):
     col = 0
 
     # Following steps to build
-    # LCSuff[m+1][n+1] in bottom up fashion
     for i in range(len(seq1) + 1):
         for j in range(len(seq2) + 1):
             if (i == 0 or j == 0):
                 table[i][j] = 0
             elif (seq1[i - 1] == seq2[j - 1]):
+                # Will not return a LCS with end codon '*'
                 if (seq1[i - 1] != '*'):
                     table[i][j] = table[i - 1][j - 1] + 1
                     if result < table[i][j]:
@@ -98,17 +103,13 @@ def longestCommonSequenceMain(seq1, seq2):
                 table[i][j] = 0
 
 
-    # allocate space for the longest
-    # common substring
+    # allocate space for the LCS
     LCS = ['0'] * result
 
-    # traverse up diagonally form the
-    # (row, col) cell until LCSuff[row][col] != 0
     while table[row][col] != 0:
         result -= 1
         LCS[result] = seq1[row - 1]
 
-        # move diagonally up to previous cell
         row -= 1
         col -= 1
 
@@ -116,16 +117,17 @@ def longestCommonSequenceMain(seq1, seq2):
     return ''.join(LCS)
 
 
-
 # ALGORITHM FOUR
+# Compares every frame in frame one to every frame in frame two
+# to find the longest gene expression of all frame combinations
 def LongestGeneExpression(frames1, frames2):
-    print("Longest Gene Expression")
     framePair = ["",""]
     longestLength = 0
     longestGeneExpression = ''
+
     for frame1 in frames1:
         for frame2 in frames2:
-            lcs = longestCommonSequenceMain(frame1, frame2)
+            lcs = longestCommonSubstring(frame1, frame2)
             currentLength = len(lcs)
             if (currentLength) > (longestLength):
                 longestLength = currentLength
@@ -133,32 +135,98 @@ def LongestGeneExpression(frames1, frames2):
                 framePair[1] = frame2
                 longestGeneExpression = lcs
 
-    print(longestLength)
-    print(longestGeneExpression)
-    print(framePair[0])
-    print(framePair[1])
+    print("Longest Gene Expression Results")
+    print("LGE ({1}) : {0}".format(longestGeneExpression, longestLength))
+    print("Frame 1.{2} ({1}) : {0}".format(framePair[0], len(framePair[0]), frames1.index(framePair[0]) + 1))
+    print("Frame 2.{2} ({1}) : {0}".format(framePair[1], len(framePair[1]), frames2.index(framePair[1]) + 1))
 
 
-# Testing Area
+# Purely for Testing Helper
+# Generates a random nucleotide sequence
+def generateRandom(length):
+    sequence = ''
+    for x in range(length):
+        nuc = ''
+        # Chooses a random numbeer between 1 and 4
+        num = random.randint(1, 4)
+        if num == 1:
+            nuc = 'A'
+        if num == 2:
+            nuc = 'T'
+        if num == 3:
+            nuc = 'C'
+        if num == 4:
+            nuc = 'G'
+        sequence += nuc
+
+    # Return the random nucleotide sequence
+    return sequence
+
+
 # Main Function
-if __name__ == "__main__":
-    # Example
-    dna_seq1 = "AATTGGGGATCGATCGCATCAGCTAGCATCGACTAGCTAGC"
-    dna_seq2 = "AGTTGGGGCCCGTTGTGCAAAGTTCGCTAATCGACTAGCTAGC"
+# Prints details of results of other Algos
+def main(dna_seq1, dna_seq2):
+    # Records start time
+    time1 = time.time()
 
-
+    # Creates six frames for two DNA sequences
     frames1 = sixFrame(dna_seq1)
     frames2 = sixFrame(dna_seq2)
 
-    print("DNA ONE ", dna_seq1)
-    print("Six Frames")
-    for frame in frames1:
-        print(frame)
-
-    print("\n\nDNA TWO ", dna_seq2)
-    print("Six Frames")
-    for frame in frames2:
-        print(frame)
-
-    print()
+    # Calls Algorithm Four with the two sets of frames as parameters
     LongestGeneExpression(frames1, frames2)
+
+    # Records end time and prints elapsed time
+    time2 = time.time()
+    print("Time Elapsed : {:.5f} seconds\n".format(time2 - time1))
+
+
+# Testing Area
+if __name__ == "__main__":
+    random.seed(7124)
+
+    # FULL TESTING SET
+    print(100)
+    dna_seq1 = generateRandom(100)
+    dna_seq2 = generateRandom(100)
+    main(dna_seq1, dna_seq2)
+
+    print(250)
+    dna_seq1 = generateRandom(250)
+    dna_seq2 = generateRandom(250)
+    main(dna_seq1, dna_seq2)
+
+    print(500)
+    dna_seq1 = generateRandom(500)
+    dna_seq2 = generateRandom(500)
+    main(dna_seq1, dna_seq2)
+
+    print(750)
+    dna_seq1 = generateRandom(750)
+    dna_seq2 = generateRandom(750)
+    main(dna_seq1, dna_seq2)
+
+    print(1000)
+    dna_seq1 = generateRandom(1000)
+    dna_seq2 = generateRandom(1000)
+    main(dna_seq1, dna_seq2)
+
+    print(2500)
+    dna_seq1 = generateRandom(2500)
+    dna_seq2 = generateRandom(2500)
+    main(dna_seq1, dna_seq2)
+
+    print(5000)
+    dna_seq1 = generateRandom(5000)
+    dna_seq2 = generateRandom(5000)
+    main(dna_seq1, dna_seq2)
+
+    print(7500)
+    dna_seq1 = generateRandom(7500)
+    dna_seq2 = generateRandom(7500)
+    main(dna_seq1, dna_seq2)
+
+    print(10000)
+    dna_seq1 = generateRandom(10000)
+    dna_seq2 = generateRandom(10000)
+    main(dna_seq1, dna_seq2)
