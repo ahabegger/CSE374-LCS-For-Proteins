@@ -1,7 +1,7 @@
-# CSE 374 Group Assignment
-### Alexander J. Habegger
+# CSE 374 Longest Common Substring in Bioinformatics
+### Alexander J. Habegger, Josh Lawson, Michael Glum, Dillon Watkins, and Max Zaremba
 
-This repository contains a Python implementation of algorithms to find the Longest Gene Expression (LGE) between two DNA sequences. The group members are Alex Habegger, Josh Lawson, Michael Glum, Dillon Watkins, and Max Zaremba.
+This repository contains a Python implementation of algorithms to find the Longest Gene Expression (LGE) between two DNA sequences.
 
 ## Features
 * Random DNA sequence generator
