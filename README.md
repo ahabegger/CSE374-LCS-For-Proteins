@@ -14,7 +14,7 @@ This repository contains a Python implementation of algorithms to find the Longe
 1. Clone the repository
 2. Navigate to the directory containing the script
 3. Run the script using python3 <script_name.py>
-4. 
+   
 ## Algorithms
 1. translation(sequence) - Translates a given DNA sequence into a protein sequence using a hard-coded dictionary of codons to proteins.
 2. sixFrame(sequence) - Takes a DNA sequence as input and returns six translation frames.
